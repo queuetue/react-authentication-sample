@@ -5,7 +5,10 @@
   "dependencies": {
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react-scripts": "1.1.4"
+    "react-facebook-login": "^4.0.1",
+    "react-google-login": "^3.2.1",
+    "react-scripts": "^1.1.4",
+    "react-twitter-auth": "^0.0.12"
   },
   "scripts": {
     "start": "react-scripts start",
