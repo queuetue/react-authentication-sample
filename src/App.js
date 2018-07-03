@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import TwitterLogin from 'react-twitter-auth';
 import FacebookLogin from 'react-facebook-login';
 import { GoogleLogin } from 'react-google-login';
+import cookie from 'react-cookies';
+import UserNavbar from './components/ui/navbar_user';
+import AnonymousNavbar from './components/ui/navbar_user';
+
 
 import './App.css';
 
@@ -9,11 +13,40 @@ class App extends Component {
 
   constructor() {
     super();
-    this.state = { isAuthenticated: false, user: null, token: ''};
-  }
+    let token = cookie.load('_atf_token');
+    this.state = { isAuthenticated: false, user: null, token: null};
+    if (token) {
+      const options = {
+        method: 'POST',
+        body: '',
+        mode: 'cors',
+        cache: 'default'
+      };
+      fetch('http://192.168.0.147:4000/api/v1/auth/token/' + token, options).then(r => {
+        r.json().then(payload => {
+          if (payload.user) {
+            this.setState({ isAuthenticated: true, user: payload.user, token: payload.token});
+            cookie.save('_atf_token', payload.token, { path: '/' })
+          }
+        });
+      })
+    }
+
+    }
 
   logout = () => {
-    this.setState({isAuthenticated: false, token: '', user: null})
+    const options = {
+      method: 'POST',
+      body: '',
+      mode: 'cors',
+      cache: 'default'
+    };
+    fetch('http://192.168.0.147:4000/api/v1/auth/logout/' + cookie.load('_atf_token'), options).then(r => {
+      r.json().then(payload => {
+        this.setState({isAuthenticated: false, token: '', user: null})
+        cookie.remove('_atf_token')
+      });
+    })
   };
 
   twitterResponse = (e) => {};
@@ -29,12 +62,11 @@ class App extends Component {
     };
 
     fetch('http://192.168.0.147:4000/api/v1/auth/facebook', options).then(r => {
-        const token = r.headers.get('x-auth-token');
-        console.log("1 got response", r, token);
-        r.json().then(user => {
-          if (token) {
-                this.setState({isAuthenticated: true, user, token})
-            }
+        r.json().then(payload => {
+          if (payload.user) {
+            this.setState({isAuthenticated: true, user: payload.user, token: payload.token})
+            cookie.save('_atf_token', payload.token, { path: '/' })
+          }
         });
     })
 
@@ -63,8 +95,8 @@ class App extends Component {
         (
             <div>
                 <TwitterLogin loginUrl="http://localhost:4000/api/v1/auth/twitter"
-                                onFailure={this.twitterResponse} onSuccess={this.twitterResponse}
-                                requestTokenUrl="http://localhost:4000/api/v1/auth/twitter/reverse"/>
+                    onFailure={this.twitterResponse} onSuccess={this.twitterResponse}
+                    requestTokenUrl="http://localhost:4000/api/v1/auth/twitter/reverse"/>
                 <FacebookLogin
                     appId="623106321225566"
                     autoLoad={false}
