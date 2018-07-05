@@ -3,14 +3,24 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "connected-react-router": "^4.3.0",
+    "cross-fetch": "^2.2.2",
+    "custom-react-scripts": "^0.2.2",
+    "lodash": "^4.17.10",
     "react": "^16.4.1",
     "react-cookies": "^0.1.0",
     "react-dom": "^16.4.1",
     "react-facebook-login": "^4.0.1",
     "react-google-login": "^3.2.1",
+    "react-redux": "^5.0.7",
     "react-router": "^4.3.1",
-    "react-scripts": "^1.1.4",
-    "react-twitter-auth": "^0.0.12"
+    "react-router-dom": "^4.3.1",
+    "react-twitter-auth": "^0.0.12",
+    "redux": "^4.0.0",
+    "redux-devtools-extension": "^2.13.5",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0",
+    "superagent": "^3.8.3"
   },
   "scripts": {
     "start": "react-scripts start",

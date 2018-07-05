@@ -1,0 +1,15 @@
+ul.menu {
+  margin:0;
+  padding:0;
+}
+
+ul.menu li {
+  display: inline;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+ul.menu a {
+  text-decoration: none;
+  color: black;
+}
